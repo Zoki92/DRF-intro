@@ -4,8 +4,10 @@ from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
+from rest_framework import status
 from .models import Product
 from .serializers import ProductSerializer
+from .permissions import IsAdminOrReadOnly
 
 
 class JSONResponse(HttpResponse):
@@ -32,7 +34,17 @@ def product_list(request):
 #         serializer = ProductSerializer(products, many=True)
 #         return Response(serializer.data)
 
+#     def post(self, request, format=None):
+#         serializer = ProductSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data,
+#                             status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors,
+#                         status=status.HTTP_400_BAD_REQUEST)
 
-class ProductList(generics.ListAPIView):
+
+class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = (IsAdminOrReadOnly,)
