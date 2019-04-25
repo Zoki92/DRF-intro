@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     # Local
-    'puppies.apps.PuppiesConfig',
     'catalog.apps.CatalogConfig',
 
 ]
